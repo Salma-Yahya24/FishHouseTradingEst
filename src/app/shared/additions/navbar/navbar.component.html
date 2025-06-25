@@ -1,0 +1,57 @@
+<header class="fixed top-0 z-50 bg-[#f4f4f4] shadow-sm w-full sm:w-[calc(100%-12rem)] sm:left-48 border-b border-gray-300">
+  <div class="flex items-center justify-between h-16 px-4">
+
+    <!-- Left Section: Sidebar Toggle + Create New Product -->
+    <div class="flex items-center space-x-4">
+      <!-- Sidebar Toggle (Mobile Only) -->
+      <button
+        type="button"
+        class="inline-flex items-center p-2 text-sm text-gray-600 rounded-lg sm:hidden hover:bg-[#eaeaea]"
+        (click)="toggleSidebar()"
+        aria-label="Toggle sidebar"
+      >
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+
+      <!-- Create New Product Button -->
+      <button
+        class="bg-[#00c4b3] hover:bg-[#00b0a1] text-white text-sm font-medium py-2 px-4 rounded-md shadow-sm hidden sm:block"
+      >
+        Create New Product
+      </button>
+    </div>
+
+    <!-- Right Section -->
+    <div class="flex items-center space-x-4 ml-auto">
+
+      <!-- Notifications -->
+      <button class="relative p-2 text-gray-600 hover:bg-[#eaeaea] rounded-full" aria-label="Notifications">
+        <i class="fa fa-bell text-lg"></i>
+        <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+      </button>
+
+      <!-- User Info -->
+      <div class="relative flex items-center space-x-2">
+        <img src="assets/images/users/avatar-1.jpg" alt="User Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+        <div class="hidden sm:block text-left leading-tight">
+          <div class="text-sm font-medium text-gray-800">Mohammed Alyaquobi</div>
+          <span class="text-xs text-gray-500">Alyaquobi&#64;yahoo.com</span>
+        </div>
+      </div>
+
+      <!-- Logout Split Button -->
+      <div class="flex rounded-md overflow-hidden shadow-sm">
+        <!-- Icon Part -->
+        <button class="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1.5 flex items-center justify-center">
+          <i class="fa fa-sign-out-alt"></i>
+        </button>
+        <!-- Text Part -->
+        <button class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-1.5 text-sm font-medium">
+          Logout
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</header>

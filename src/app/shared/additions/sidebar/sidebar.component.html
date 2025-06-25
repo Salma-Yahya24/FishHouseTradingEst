@@ -1,0 +1,193 @@
+<!-- Overlay for mobile -->
+<div
+  class="fixed inset-0 bg-[#00000080] z-30 sm:hidden transition-opacity"
+  *ngIf="isSidebarOpen"
+  (click)="closeSidebar()"
+></div>
+
+
+<!-- Sidebar -->
+<aside
+  class="fixed top-0 left-0 z-60 w-48 h-screen transition-transform bg-[#f4f4f4] shadow-lg border-r border-gray-300"
+  [ngClass]="{
+    '-translate-x-full': !isSidebarOpen && !isLargeScreen,
+    'translate-x-0': isSidebarOpen || isLargeScreen
+  }"
+  aria-label="Sidebar"
+>
+  <div class="h-full px-3 py-4 overflow-y-auto bg-[#f4f4f4]">
+    <!-- Logo -->
+    <div class="flex items-center ps-2.5 mb-5">
+      <a routerLink="/" class="flex items-center space-x-2">
+        <img src="assets/images/logo-dark.png" class="h-6" alt="Logo">
+        <span class="text-lg font-semibold text-gray-800">Fish House</span>
+      </a>
+    </div>
+
+    <!-- Navigation Menu -->
+    <ul class="space-y-1 font-medium text-sm text-gray-800">
+
+      <!-- Dashboard -->
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+           class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+          <i class="fa fa-chart-line w-5 h-5 text-gray-600 group-hover:text-blue-700"></i>
+          <span class="ms-3">Dashboard</span>
+        </a>
+      </li>
+
+      <!-- Products -->
+      <li>
+        <button (click)="toggleDropdown('products')" class="flex w-full items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+          <i class="fa fa-fish w-5 h-5 text-gray-600 group-hover:text-blue-700"></i>
+          <span class="ms-3 flex-1 text-left" >Products</span>
+          <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+        </button>
+        <ul *ngIf="openDropdown === 'products'" class="ps-8 mt-1 space-y-1">
+          <li>
+            <a routerLink="/products/list" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Fish Types</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/products/add" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Add Product</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/products/stock" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Stock</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Invoices -->
+      <li>
+        <button (click)="toggleDropdown('invoices')" class="flex w-full items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+          <i class="fa fa-file-invoice-dollar w-5 h-5 text-gray-600 group-hover:text-blue-700"></i>
+          <span class="ms-3 flex-1 text-left">Invoices</span>
+          <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+        </button>
+        <ul *ngIf="openDropdown === 'invoices'" class="ps-8 mt-1 space-y-1">
+          <li>
+            <a routerLink="/purchases" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Purchase</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/sales" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Sales</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/returns" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Returns</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Customers -->
+      <li>
+        <a routerLink="/customers" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+           class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+          <i class="fa fa-user-friends w-5 h-5 text-gray-600 group-hover:text-blue-700"></i>
+          <span class="ms-3">Customers</span>
+        </a>
+      </li>
+
+      <!-- Suppliers -->
+      <li>
+        <a routerLink="/suppliers" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+           class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+          <i class="fa fa-industry w-5 h-5 text-gray-600 group-hover:text-blue-700"></i>
+          <span class="ms-3">Suppliers</span>
+        </a>
+      </li>
+
+      <!-- Expenses -->
+      <li>
+        <button (click)="toggleDropdown('expenses')" class="flex w-full items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+          <i class="fa fa-money-bill-wave w-5 h-5 text-gray-600 group-hover:text-blue-700"></i>
+          <span class="ms-3 flex-1 text-left">Expenses</span>
+          <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+        </button>
+        <ul *ngIf="openDropdown === 'expenses'" class="ps-8 mt-1 space-y-1">
+          <li>
+            <a routerLink="/expenses/list" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">All Expenses</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/expenses/add" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Add Expense</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/expenses/report" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Expense Report</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Employees -->
+      <li>
+        <button (click)="toggleDropdown('employees')" class="flex w-full items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+          <i class="fa fa-users w-5 h-5 text-gray-600 group-hover:text-blue-700"></i>
+          <span class="ms-3 flex-1 text-left">Employees</span>
+          <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+        </button>
+        <ul *ngIf="openDropdown === 'employees'" class="ps-8 mt-1 space-y-1">
+          <li>
+            <a routerLink="/employees/list" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">All Employees</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/employees/add" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Add Employee</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/employees/archive" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+               class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+              <span class="ms-3">Archived</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Reports -->
+      <li>
+        <a routerLink="/reports" routerLinkActive="bg-[#d9ecff] text-blue-700 active"
+           class="flex items-center p-2 rounded-lg hover:bg-[#eaeaea] group">
+          <i class="fa fa-chart-pie w-5 h-5 text-gray-600 group-hover:text-blue-700"></i>
+          <span class="ms-3">Reports</span>
+        </a>
+      </li>
+
+      <!-- Logout -->
+      <li>
+        <a routerLink="/logout" class="flex items-center p-2 text-red-600 rounded-lg hover:bg-red-50 group">
+          <i class="fa fa-sign-out-alt w-5 h-5"></i>
+          <span class="ms-3">Logout</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</aside>
+
