@@ -1,4 +1,5 @@
 import { DashboardComponent } from './shared/additions/dashboard/dashboard.component';
+import { FishCategoriesComponent } from './shared/pages/fish-categories/fish-categories.component';
 import { FishTypesComponent } from './shared/pages/fish-types/fish-types.component';
 import { Routes } from '@angular/router';
 
@@ -15,5 +16,9 @@ export const routes: Routes = [
   {
     path: 'products/list',
     component: FishTypesComponent
+  },
+  {
+    path: 'products/categories',
+    component: FishCategoriesComponent
   }
 ];
