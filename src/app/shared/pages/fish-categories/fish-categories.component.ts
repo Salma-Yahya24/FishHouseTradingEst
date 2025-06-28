@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-fish-categories',
+  standalone: true,
   imports: [FormsModule, NgFor, NgIf, CommonModule],
   templateUrl: './fish-categories.component.html',
   styleUrl: './fish-categories.component.scss'
@@ -40,16 +41,26 @@ export class FishCategoriesComponent {
     }
   ];
 
-filteredCategories() {
-    const term = this.searchTerm.trim().toLowerCase();
-    if (!term) return this.categories;
+  displayedCategories = this.categories;
 
-    return this.categories
+  constructor() {
+    this.updateFilteredCategories();
+  }
+
+  updateFilteredCategories() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      this.displayedCategories = this.categories;
+      return;
+    }
+
+    this.displayedCategories = this.categories
       .map(category => ({
         ...category,
         fishTypes: category.fishTypes.filter(fish =>
           fish.toLowerCase().includes(term)
-        )}))
+        )
+      }))
       .filter(cat => cat.fishTypes.length > 0);
   }
 
@@ -57,4 +68,3 @@ filteredCategories() {
     this.selectedCategory = this.selectedCategory === name ? null : name;
   }
 }
-
