@@ -1,9 +1,20 @@
+<!-- fish-categories.component.html -->
 <div class="p-4">
   <h2 class="text-2xl font-semibold text-gray-800 mb-4">Fish Categories</h2>
 
+  <!-- Search Box -->
+  <div class="mb-4">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="ابحث عن نوع سمك..."
+      class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
     <div
-      *ngFor="let category of categories"
+      *ngFor="let category of filteredCategories()"
       class="bg-white border border-gray-200 rounded-lg shadow-sm p-4 hover:shadow-md transition"
     >
       <div (click)="toggleCategory(category.name)" class="cursor-pointer">

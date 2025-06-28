@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-fish-categories',
-  imports: [CommonModule],
+  imports: [FormsModule, NgFor, NgIf, CommonModule],
   templateUrl: './fish-categories.component.html',
   styleUrl: './fish-categories.component.scss'
 })
 export class FishCategoriesComponent {
-   selectedCategory: string | null = null;
+  selectedCategory: string | null = null;
+  searchTerm: string = '';
 
   categories = [
     {
@@ -38,7 +40,21 @@ export class FishCategoriesComponent {
     }
   ];
 
+filteredCategories() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) return this.categories;
+
+    return this.categories
+      .map(category => ({
+        ...category,
+        fishTypes: category.fishTypes.filter(fish =>
+          fish.toLowerCase().includes(term)
+        )}))
+      .filter(cat => cat.fishTypes.length > 0);
+  }
+
   toggleCategory(name: string) {
     this.selectedCategory = this.selectedCategory === name ? null : name;
   }
 }
+
