@@ -1,16 +1,18 @@
-import { CurrencyPipe, NgClass, NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { NgFor, NgIf, CurrencyPipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-fish-types',
   standalone: true,
-  imports: [NgFor, FormsModule, CurrencyPipe, NgClass],
+  imports: [NgFor, NgIf, FormsModule, CurrencyPipe, NgClass],
   templateUrl: './fish-types.component.html',
   styleUrl: './fish-types.component.scss'
 })
 export class FishTypesComponent implements OnInit {
   searchTerm: string = '';
+  currentPage: number = 1;
+  itemsPerPage: number = 12;
 
   fishTypes = [
     { id: 43, code: '', name: 'جمبري جمبو', price: 1200.00, active: 0 },
@@ -36,34 +38,51 @@ export class FishTypesComponent implements OnInit {
     { id: 63, code: '', name: 'عقام', price: 0.00, active: 0 },
     { id: 64, code: '', name: 'هامور', price: 0.00, active: 0 },
     { id: 65, code: '', name: 'مشكل', price: 0.00, active: 0 },
-    { id: 66, code: '66', name: 'يوسف محشي', price: 555.00, active: 1 },
+    { id: 66, code: '66', name: 'يوسف محشي', price: 555.00, active: 1 }
   ];
 
-  itemsPerPage = 8;
-  currentPage = 1;
-  displayedFish: any[] = [];
-
   ngOnInit() {
-    this.updateDisplayedFish();
+    this.currentPage = 1;
   }
 
-  updateDisplayedFish() {
-    const filtered = this.filteredFishTypes();
-    this.displayedFish = filtered.slice(0, this.currentPage * this.itemsPerPage);
-  }
-
-  filteredFishTypes() {
+  get filteredFishTypes() {
     return this.fishTypes.filter(fish =>
       fish.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
-  loadMore() {
-    this.currentPage++;
-    this.updateDisplayedFish();
+  get displayedFish() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredFishTypes.slice(start, start + this.itemsPerPage);
   }
 
-  hasMoreItems() {
-    return this.filteredFishTypes().length > this.displayedFish.length;
+  get totalPages(): number {
+    return Math.ceil(this.filteredFishTypes.length / this.itemsPerPage) || 1;
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  updateDisplayedFish() {
+    this.currentPage = 1;
+  }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 }
