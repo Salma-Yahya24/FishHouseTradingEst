@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-fish-types',
   standalone: true,
-  imports: [NgFor, NgIf, FormsModule, CurrencyPipe, NgClass],
+  imports: [NgFor, FormsModule, CurrencyPipe, NgClass],
   templateUrl: './fish-types.component.html',
   styleUrl: './fish-types.component.scss'
 })
