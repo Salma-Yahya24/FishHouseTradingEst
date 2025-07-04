@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-import { SidebarService } from '../../../core/sevices/sidebar/sidebar.service';
+
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-navbar',

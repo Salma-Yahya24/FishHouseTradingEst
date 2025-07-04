@@ -2,8 +2,9 @@ import { NgIf } from '@angular/common';
 import { Component,  OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SidebarService } from '../../../core/sevices/sidebar/sidebar.service';
+
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { SidebarService } from '../../../core/services/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',

@@ -1,10 +1,11 @@
 import { Component, inject, PLATFORM_ID, computed, Signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { SidebarComponent } from "./shared/additions/sidebar/sidebar.component";
+
 import { NavbarComponent } from "./shared/additions/navbar/navbar.component";
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from './core/services/auth/auth.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { SidebarComponent } from './shared/additions/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-root',

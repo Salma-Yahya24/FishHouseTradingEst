@@ -1,45 +1,110 @@
-<!-- Search Box -->
+<!-- Add button -->
 <div class="mb-4">
+  <button
+    (click)="openModal()"
+    class="bg-[#00c4b3] hover:bg-[#00b0a1] text-white text-sm font-medium py-2 px-4 rounded-md shadow-sm hidden sm:block"
+  >
+    + Add New Product
+  </button>
+</div>
+
+<!-- Search -->
+<div class="flex flex-col sm:flex-row items-center gap-3 md:w-2/3 mx-auto my-4">
   <input
     type="text"
     [(ngModel)]="searchTerm"
     (ngModelChange)="updateDisplayedFish()"
-    placeholder="ابحث عن نوع سمك..."
-    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    placeholder="Search..."
+    class="flex-grow px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
   />
+
+  <select
+    [(ngModel)]="searchBy"
+    (change)="updateDisplayedFish()"
+    class="w-40 px-2 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="name">Search by name</option>
+    <option value="id">Search by code</option>
+  </select>
 </div>
+
+<!-- Modal -->
+@if (isModalOpen) {
+  <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg relative">
+      <h2 class="text-lg font-semibold mb-4">
+        {{ isEditMode ? 'Edit Product' : 'Add New Type' }}
+      </h2>
+
+      <form [formGroup]="isEditMode ? editForm : addForm" (ngSubmit)="submit()">
+        <div class="mb-4">
+          <label class="block text-sm mb-1">Name</label>
+          <input
+            type="text"
+            formControlName="name"
+            class="w-full border px-3 py-2 rounded text-sm"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm mb-1">Price</label>
+          <input
+            type="number"
+            formControlName="price"
+            class="w-full border px-3 py-2 rounded text-sm"
+          />
+        </div>
+
+        <div class="flex justify-end gap-2">
+          <button
+            type="button"
+            (click)="closeModal()"
+            class="text-sm px-4 py-1.5 border rounded text-gray-700 hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="(isEditMode ? editForm.invalid : addForm.invalid)"
+            class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
 
 <!-- Grid List -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-  <div
-    *ngFor="let fish of displayedFish"
-    class="bg-white border border-gray-200 rounded-lg shadow-sm p-4 hover:shadow-md transition"
-  >
-    <div class="flex justify-between items-center mb-2">
-      <div class="flex items-center gap-2 text-gray-800">
-        <i class="fa fa-fish text-blue-500"></i>
-        <h4 class="text-sm font-semibold">{{ fish.name }}</h4>
+  @for (fish of items | search: searchTerm : searchBy; track $index) {
+    <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4 hover:shadow-md transition">
+      <div class="flex justify-between items-center mb-2">
+        <div class="flex items-center gap-2 text-gray-800">
+          <i class="fa fa-fish text-blue-500"></i>
+          <h4 class="text-sm font-semibold">{{ fish.name }}</h4>
+        </div>
+        <span
+          class="text-xs px-2 py-1 rounded"
+          [ngClass]="fish.isDeleted ? 'bg-gray-300 text-gray-700' : 'bg-green-600 text-white'"
+        >
+          {{ fish.isDeleted ? 'Inactive' : 'Active' }}
+        </span>
       </div>
-      <span
-        class="text-xs px-2 py-1 rounded"
-        [ngClass]="fish.active ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-700'"
-      >
-        {{ fish.active ? 'Active' : 'Inactive' }}
-      </span>
-    </div>
 
-    <div class="text-sm text-gray-700 mb-1">
-      <span class="font-medium">Price: </span>{{ fish.price | currency:'EGP':'symbol':'1.0-0' }}
-    </div>
-    <div class="text-sm text-gray-700 mb-1">
-      <span class="font-medium">Code: </span>{{ fish.code || '-' }}
-    </div>
+      <div class="text-sm text-gray-700 mb-1">
+        <span class="font-medium">Price: </span>{{ fish.price | currency:'EGP':'symbol':'1.0-0' }}
+      </div>
+      <div class="text-sm text-gray-700 mb-1">
+        <span class="font-medium">Code: </span>{{ fish.id }}
+      </div>
 
-    <div class="flex justify-end gap-2 mt-3">
-      <button class="text-sm text-blue-600 hover:underline">Edit</button>
-      <button class="text-sm text-red-600 hover:underline">Delete</button>
+      <div class="flex justify-end gap-2 mt-3">
+        <button (click)="openEditModal(fish)" class="text-sm text-blue-600 hover:underline">Edit</button>
+        <button (click)="deleteProduct(fish.id)" class="text-sm text-red-600 hover:underline">Delete</button>
+      </div>
     </div>
-  </div>
+  }
 </div>
 
 <!-- Pagination -->
@@ -53,17 +118,18 @@
       «
     </button>
 
-    <button
-      *ngFor="let page of pageNumbers"
-      (click)="goToPage(page)"
-      [ngClass]="{
-        'bg-blue-600 text-white': page === currentPage,
-        'bg-white text-gray-700 border': page !== currentPage
-      }"
-      class="px-3 py-1 text-sm rounded border"
-    >
-      {{ page }}
-    </button>
+    @for (page of pageNumbers; track $index) {
+      <button
+        (click)="goToPage(page)"
+        [ngClass]="{
+          'bg-blue-600 text-white': page === currentPage,
+          'bg-white text-gray-700 border': page !== currentPage
+        }"
+        class="px-3 py-1 text-sm rounded border"
+      >
+        {{ page }}
+      </button>
+    }
 
     <button
       (click)="nextPage()"
@@ -75,6 +141,6 @@
   </div>
 
   <div class="text-sm text-gray-600">
-    Page {{ currentPage }} of {{ totalPages }} — {{ filteredFishTypes.length }} items total
+    Page {{ currentPage }} of {{ totalPages }} — {{ (items | search: searchTerm : searchBy).length }} items showing
   </div>
 </div>

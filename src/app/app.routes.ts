@@ -19,11 +19,13 @@ export const routes: Routes = [
   },
   {
     path: 'products/list',
-    component: FishTypesComponent
+    component: FishTypesComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'products/categories',
-    component: FishCategoriesComponent
+    component: FishCategoriesComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'login', component: LoginComponent, canActivate: [loginGuard]
